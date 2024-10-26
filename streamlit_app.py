@@ -48,35 +48,35 @@ process_completed = False
 
 def githubdetected():
     path_parts = parsed_url.path.split('/')
-        if len(path_parts) >= 5 and path_parts[3] == 'tree':
-            repo_owner = path_parts[1]
-            repo_name = path_parts[2]
-            branch = path_parts[4]
-            folder_path = '/'.join(path_parts[5:])
+    if len(path_parts) >= 5 and path_parts[3] == 'tree':
+        repo_owner = path_parts[1]
+        repo_name = path_parts[2]
+        branch = path_parts[4]
+        folder_path = '/'.join(path_parts[5:])
 
-            output_dir = os.path.join("temp_download", folder_path)
-            st.write(f"Downloading folder: {folder_path} from repo: {repo_owner}/{repo_name} (branch: {branch})")
+        output_dir = os.path.join("temp_download", folder_path)
+        st.write(f"Downloading folder: {folder_path} from repo: {repo_owner}/{repo_name} (branch: {branch})")
 
-            download_github_folder(repo_owner, repo_name, branch, folder_path, output_dir)
-            file_links = []
-            for root, dirs, files in os.walk(output_dir):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    st.write(f"Uploading {file} to file.io...")
-                    link = upload_to_fileio(file_path)
-                    if link:
-                        file_links.append(link)
-                        st.write(f"Uploaded {file} to file.io: {link}")
-                    else:
-                        st.error(f"Failed to upload {file}")
+        download_github_folder(repo_owner, repo_name, branch, folder_path, output_dir)
+        file_links = []
+        for root, dirs, files in os.walk(output_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                st.write(f"Uploading {file} to file.io...")
+                link = upload_to_fileio(file_path)
+                if link:
+                    file_links.append(link)
+                    st.write(f"Uploaded {file} to file.io: {link}")
+                 else:
+                    st.error(f"Failed to upload {file}")
 
-            if file_links:
-                st.success("All files uploaded successfully.")
-                st.write("Download links:")
-                for link in file_links:
-                    st.write(link)
+        if file_links:
+            st.success("All files uploaded successfully.")
+            st.write("Download links:")
+            for link in file_links:
+                st.write(link)
 
-            process_completed = True
+        process_completed = True
     
 
 st.title("Dynamic Page Input Example")
