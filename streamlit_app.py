@@ -65,7 +65,7 @@ if main_option == 'Open-Source':
   default_text = query_params.get("url", [""])[0]
   user_input = st.text_input("Enter your text:", value=default_text)
   st.write(f"You entered: {user_input}")
-  st.experimental_set_query_params(input=user_input)
+  st.experimental_set_query_params(url=user_input)
   st.write(f"Current URL: `https://mcaddon-manager.streamlit.app/?url={user_input}'")
 
 if main_option == '-Changelogs-':
