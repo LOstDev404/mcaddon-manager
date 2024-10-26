@@ -74,7 +74,7 @@ if main_option == 'Open-Source':
     query_params = st.experimental_get_query_params()
     default_text = query_params.get("github", [""])[0]
     github_url = st.text_input("Enter the link to a compatable Github folder:", value=default_text)
-    st.write(f"Full URL: https://mcaddon-manager.streamlit.app/?git={github_url}")
+    st.write(f"Full URL: https://mcaddon-manager.streamlit.app/?github={github_url}")
 
 
 if main_option == '-Changelogs-':
