@@ -1,9 +1,12 @@
+import shutil
 import streamlit as st
 import os
 import zipfile
 import requests
 import uuid
+import shutil
 import json
+from git import Repo
 from urllib.parse import urlparse, parse_qs
 
 st.set_page_config(
@@ -12,7 +15,26 @@ st.set_page_config(
 )
 
 # Functions:
+#Download Github folder
+def downloadgithub(github_url):
+    url_parts = github_url.split('/')
+    user_repo = f'{url_parts[3]}/{url_parts[4]}'
+    branch = 'main'
+    folder_path = '/'.join(url_parts[7:])
 
+    clone_dir = 'temp_clone'
+    if os.path.exists(clone_dir):
+        shutil.rmtree(clone_dir)
+    Repo.clone_from(f'https://github.com/{user_repo}.git', clone_dir, branch=branch, depth=1)
+
+    src_folder = os.path.join(clone_dir, folder_path)
+    dst_folder = 'MCAddon/'
+    if os.path.exists(dst_folder):
+        shutil.rmtree(dst_folder)
+    shutil.copytree(src_folder, dst_folder)
+
+    shutil.rmtree(clone_dir)
+    
 # UUID Generation
 def generate_uuids():
     return str(uuid.uuid4()), str(uuid.uuid4())
@@ -65,9 +87,7 @@ def upload_to_fileio(file_path):
     return response_data.get('link')
 
 # ---------------------------------------- UI Starts Here ----------------------------------------
-st.title("Open Source MCAddon Manager `Version: 0.01`")
-st.error('**Not working whatsoever, current (non-open source) working version is:** https://lostdev404-mcaddons.streamlit.app')
-st.write('Contact `LOstDev404` on Discord for any bugs, questions, or suggestions.')
+st.title("Dynamic Page Input Example")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 
 if main_option == 'Open-Source':
@@ -75,6 +95,10 @@ if main_option == 'Open-Source':
     default_text = query_params.get("github", [""])[0]
     github_url = st.text_input("Enter the link to a compatable Github folder:", value=default_text)
     st.write(f"Full URL: https://mcaddon-manager.streamlit.app/?github={github_url}")
+    if 'downloadedgithub' not in st.session_state:
+        if github_url and 'github.com' in github_url:
+            downloadgithub(github_url)
+            st.session_state.downloadedgithub = True
 
 
 if main_option == '-Changelogs-':
