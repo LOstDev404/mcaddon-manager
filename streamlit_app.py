@@ -66,9 +66,9 @@ def upload_to_fileio(file_path):
 
 # ---------------------------------------- UI Starts Here ----------------------------------------
 st.title("Open Source MCADDON Manager `Version: 0.01`")
-main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 st.warning('**Not working whatsoever, current (non-open source) working version is:** https://lostdev404-mcaddons.streamlit.app')
 st.write('Contact `LOstDev404` on Discord for any bugs, questions, or suggestions.')
+main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 
 if main_option == 'Open-Source':
     query_params = st.experimental_get_query_params()
