@@ -65,8 +65,8 @@ def upload_to_fileio(file_path):
     return response_data.get('link')
 
 # ---------------------------------------- UI Starts Here ----------------------------------------
-st.title("Open Source MCADDON Manager `Version: 0.01`")
-st.warning('**Not working whatsoever, current (non-open source) working version is:** https://lostdev404-mcaddons.streamlit.app')
+st.title("Open Source MCAddon Manager `Version: 0.01`")
+st.error('**Not working whatsoever, current (non-open source) working version is:** https://lostdev404-mcaddons.streamlit.app')
 st.write('Contact `LOstDev404` on Discord for any bugs, questions, or suggestions.')
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 
