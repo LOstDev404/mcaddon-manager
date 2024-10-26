@@ -15,7 +15,7 @@ st.set_page_config(
 )
 #---------------------------------------- UI Starts Here ----------------------------------------
 
-st.title('MCADDON Custom Value Manager (Open Source `Version: 0.01`')
+st.title('MCADDON Custom Value Manager (Open Source) `Version: 0.01`')
 st.write('Contact `LOstDev404` on Discord for any bugs, questions, or suggestions.')
 
 main_option = st.selectbox('Choose a pack / option:', ['Open-Source', '-Changelogs-'])
