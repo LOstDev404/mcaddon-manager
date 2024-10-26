@@ -1,35 +1,23 @@
-import os
-import zipfile
-import requests
 import streamlit as st
-import uuid
-import json
-import shutil
 from urllib.parse import urlparse, parse_qs
 
+st.title("Dynamic Page Input Example")
 
-st.set_page_config(
-    page_title="MCAddon Manager",
-    page_icon="mcaddon-logo.ico"
-    
-)
-#---------------------------------------- UI Starts Here ----------------------------------------
+# Extract query parameters from the URL
+query_params = st.experimental_get_query_params()
 
-st.title('MCADDON Custom Value Manager (Open Source) `Version: 0.01`')
-st.write('Contact `LOstDev404` on Discord for any bugs, questions, or suggestions.')
+# Get the value from the query parameter
+default_text = query_params.get("input", [""])[0]
 
-main_option = st.selectbox('Choose a pack / option:', ['Open-Source', '-Changelogs-'])
+# Input text box with the default value from the URL
+user_input = st.text_input("Enter your text:", value=default_text)
 
-if main_option == 'Open-Source':
-    query_params = st.experimental_get_query_params()
+# Display the user input
+st.write(f"You entered: {user_input}")
 
-    default_text = query_params.get("input", [""])[0]
-    user_input = st.text_input("Enter your text:", value=default_text)
+# Update URL with the new input value
+st.experimental_set_query_params(input=user_input)
 
-    st.write(f"You entered: {user_input}")
+# Show the current URL for reference
+st.write(f"Current URL: {st.experimental_get_url()}")
 
-    st.write(f"Current URL: {st.experimental_get_url()}")
-
-if main_option == '-Changelogs-':
-
-    st.write("---")
