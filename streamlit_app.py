@@ -8,7 +8,7 @@ from urllib.parse import urlparse, parse_qs
 st.set_page_config(
     page_title="MCAddon Manager",
     page_icon="mcaddon-logo.ico"
-    
+
 )
 #Functions:
 #UUID Gen
@@ -39,9 +39,9 @@ def modify_manifest(source_dir, delay, is_void_gen):
         ).replace(
             'packdescription', f'{packdescription2}'
         )
-        
+
     modified_manifest_data = modified_manifest_data.replace('uuid1', uuid1).replace('uuid2', uuid2).replace('timedelay', str(delay))
-    
+
     with open(manifest_path, 'w') as file:
         file.write(modified_manifest_data)
 def zip_files_to_mcaddon(source_dir, output_filename):
@@ -51,7 +51,7 @@ def zip_files_to_mcaddon(source_dir, output_filename):
                 file_path = os.path.join(root, file)
                 arcname = os.path.relpath(file_path, os.path.dirname(source_dir))
                 zipf.write(file_path, arcname)
-                
+
 def upload_to_fileio(file_path):
     with open(file_path, 'rb') as file:
         response = requests.post('https://file.io', files={'file': file})
@@ -61,15 +61,17 @@ def upload_to_fileio(file_path):
 st.title("Dynamic Page Input Example")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 if main_option == 'Open-Source':
-    query_params = st.query_params
-    user_input = query_params.get("url", [""])[0]
-    user_input = st.text_input("Enter your text:", value=user_input)
-
-    st.query_params = {"url": user_input}
-
-    st.write(
+  query_params = st.experimental_get_query_params()
+  default_text = query_params.get("url", [""])[0]
+  user_input = st.text_input("Enter your text:", value=default_text)
+  st.experimental_set_query_params(url=user_input)
+  st.write(f"Current URL: https://mcaddon-manager.streamlit.app/?url={user_input}'")
 
 if main_option == '-Changelogs-':
+
+    st.markdown("## **Addon Manager | 0.01:**")
+    st.markdown("-\n - Date: *10/25/2024*")
+    st.write("---")
     
     st.markdown("## **Addon Manager | 0.01:**")
     st.markdown("-\n - Date: *10/25/2024*")
