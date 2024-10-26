@@ -1,19 +1,9 @@
-# 🎈 Blank app template
+# MCAddon Manager (Open Source) - Unfinished
 
-A simple Streamlit app template for you to modify!
+A simple web-app that lets users make decisions about Minecraft Bedrock packs before the packs are compiled and downloaded.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+Open Source app (Not working):
+https://mcaddon-manager.streamlit.app
 
-### How to run it on your own machine
-
-1. Install the requirements
-
-   ```
-   $ pip install -r requirements.txt
-   ```
-
-2. Run the app
-
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+Working non-open source app:
+https://lostdev404-mcaddons.streamlit.app
