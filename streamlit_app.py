@@ -20,7 +20,10 @@ def upload_to_fileio(file_path):
     response_data = response.json()
     return response_data.get('link')
 
-def download_github_folder(repo_owner, repo_name, branch, folder_path, output_dir):
+def download_and_upload_github_folder(repo_owner, repo_name, branch, folder_path, output_dir):
+    """
+    Downloads a folder from a GitHub repository and uploads each file to file.io.
+    """
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{folder_path}?ref={branch}"
     headers = {"Accept": "application/vnd.github.v3+json"}
 
@@ -29,35 +32,14 @@ def download_github_folder(repo_owner, repo_name, branch, folder_path, output_di
         contents = response.json()
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        
+
         for item in contents:
             item_path = os.path.join(output_dir, item['name'])
             if item['type'] == 'file':
                 download_file(item['download_url'], item_path)
             elif item['type'] == 'dir':
-                download_github_folder(repo_owner, repo_name, branch, f"{folder_path}/{item['name']}", item_path)
-    else:
-        st.error("Error fetching the GitHub folder contents.")
+                download_and_upload_github_folder(repo_owner, repo_name, branch, f"{folder_path}/{item['name']}", item_path)
 
-def download_file(file_url, save_path):
-    response = requests.get(file_url)
-    with open(save_path, 'wb') as file:
-        file.write(response.content)
-
-process_completed = False
-
-def githubdetected():
-    path_parts = parsed_url.path.split('/')
-    if len(path_parts) >= 5 and path_parts[3] == 'tree':
-        repo_owner = path_parts[1]
-        repo_name = path_parts[2]
-        branch = path_parts[4]
-        folder_path = '/'.join(path_parts[5:])
-
-        output_dir = os.path.join("temp_download", folder_path)
-        st.write(f"Downloading folder: {folder_path} from repo: {repo_owner}/{repo_name} (branch: {branch})")
-
-        download_github_folder(repo_owner, repo_name, branch, folder_path, output_dir)
         file_links = []
         for root, dirs, files in os.walk(output_dir):
             for file in files:
@@ -67,7 +49,7 @@ def githubdetected():
                 if link:
                     file_links.append(link)
                     st.write(f"Uploaded {file} to file.io: {link}")
-                 else:
+                else:
                     st.error(f"Failed to upload {file}")
 
         if file_links:
@@ -75,10 +57,18 @@ def githubdetected():
             st.write("Download links:")
             for link in file_links:
                 st.write(link)
+    else:
+        st.error("Error fetching the GitHub folder contents.")
 
-        process_completed = True
-    
+def download_file(file_url, save_path):
+    response = requests.get(file_url)
+    with open(save_path, 'wb') as file:
+        file.write(response.content)
 
+
+process_completed = False
+
+# UI Starts Here
 st.title("Dynamic Page Input Example")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 
@@ -90,8 +80,19 @@ if main_option == 'Open-Source':
 
     parsed_url = urlparse(user_input)
     if 'github.com' in parsed_url.netloc and not process_completed:
-        githubdetected()
-        
+        path_parts = parsed_url.path.split('/')
+        if len(path_parts) >= 5 and path_parts[3] == 'tree':
+            repo_owner = path_parts[1]
+            repo_name = path_parts[2]
+            branch = path_parts[4]
+            folder_path = '/'.join(path_parts[5:])
+            output_dir = os.path.join("temp_download", folder_path)
+
+            st.write(f"Downloading folder: {folder_path} from repo: {repo_owner}/{repo_name} (branch: {branch})")
+
+            download_and_upload_github_folder(repo_owner, repo_name, branch, folder_path, output_dir)
+
+            process_completed = True
         else:
             st.error("Invalid GitHub URL format. Please use a link to a folder in a repository.")
 
