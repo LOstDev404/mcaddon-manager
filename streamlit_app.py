@@ -73,8 +73,8 @@ main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 if main_option == 'Open-Source':
     query_params = st.experimental_get_query_params()
     default_text = query_params.get("git", [""])[0]
-    git = st.text_input("Enter the link to a compatable Github folder:", value=default_text)
-    st.write(f"Full url: https://mcaddon-manager.streamlit.app/?git={git}")
+    git_url = st.text_input("Enter the link to a compatable Github folder:", value=default_text)
+    st.write(f"Full URL: https://mcaddon-manager.streamlit.app/?git={git_url}")
 
 
 if main_option == '-Changelogs-':
