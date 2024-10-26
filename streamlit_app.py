@@ -3,7 +3,6 @@ from urllib.parse import urlparse, parse_qs
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 st.title("Dynamic Page Input Example")
 if main_option == 'Open-Source':
-  st.dropdown 
   query_params = st.experimental_get_query_params()
   default_text = query_params.get("input", [""])[0]
   user_input = st.text_input("Enter your text:", value=default_text)
