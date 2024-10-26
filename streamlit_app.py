@@ -5,16 +5,19 @@ import requests
 import uuid
 import json
 from urllib.parse import urlparse, parse_qs
+
 st.set_page_config(
     page_title="MCAddon Manager",
     page_icon="mcaddon-logo.ico"
-
 )
-#Functions:
-#UUID Gen
+
+# Functions:
+
+# UUID Generation
 def generate_uuids():
     return str(uuid.uuid4()), str(uuid.uuid4())
-#Manifest Modifications
+
+# Manifest Modifications
 def modify_manifest(source_dir, delay, is_void_gen):
     manifest_path = os.path.join(source_dir, 'manifest.json')
     uuid1, uuid2 = generate_uuids()
@@ -27,8 +30,8 @@ def modify_manifest(source_dir, delay, is_void_gen):
         ).replace(
             'packdescription', f'{packdescription1}'
         )
-    if manifest_option == '2':
-       modified_manifest_data = manifest_data.replace(
+    elif manifest_option == '2':
+        modified_manifest_data = manifest_data.replace(
             'packname', f'{packname2}'
         ).replace(
             'packdescription', f'{packdescription2}'
@@ -41,9 +44,11 @@ def modify_manifest(source_dir, delay, is_void_gen):
         )
 
     modified_manifest_data = modified_manifest_data.replace('uuid1', uuid1).replace('uuid2', uuid2).replace('timedelay', str(delay))
-
+    
     with open(manifest_path, 'w') as file:
         file.write(modified_manifest_data)
+
+# Zip files to .mcaddon
 def zip_files_to_mcaddon(source_dir, output_filename):
     with zipfile.ZipFile(output_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(source_dir):
@@ -52,27 +57,25 @@ def zip_files_to_mcaddon(source_dir, output_filename):
                 arcname = os.path.relpath(file_path, os.path.dirname(source_dir))
                 zipf.write(file_path, arcname)
 
+# Upload to file.io
 def upload_to_fileio(file_path):
     with open(file_path, 'rb') as file:
         response = requests.post('https://file.io', files={'file': file})
     response_data = response.json()
     return response_data.get('link')
-#---------------------------------------- UI Starts Here ----------------------------------------
+
+# ---------------------------------------- UI Starts Here ----------------------------------------
 st.title("Dynamic Page Input Example")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
+
 if main_option == 'Open-Source':
-  query_params = st.experimental_get_query_params()
-  default_text = query_params.get("url", [""])[0]
-  user_input = st.text_input("Enter your text:", value=default_text)
-  st.experimental_set_query_params(url=user_input)
-  st.write(f"Current URL: https://mcaddon-manager.streamlit.app/?url={user_input}'")
+    query_params = st.experimental_get_query_params()
+    default_text = query_params.get("url", [""])[0]
+    user_input = st.text_input("Enter your text:", value=default_text)
+    st.experimental_set_query_params(url=user_input)
+    st.write(f"Current URL: `https://mcaddon-manager.streamlit.app/?url={user_input}`")
 
 if main_option == '-Changelogs-':
-
-    st.markdown("## **Addon Manager | 0.01:**")
-    st.markdown("-\n - Date: *10/25/2024*")
-    st.write("---")
-    
-    st.markdown("## **Addon Manager | 0.01:**")
-    st.markdown("-\n - Date: *10/25/2024*")
+    st.markdown("## **`Addon Manager | 0.01`:**")
+    st.markdown("- Date: *10/25/2024*")
     st.write("---")
