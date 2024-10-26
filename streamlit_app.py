@@ -61,10 +61,13 @@ def upload_to_fileio(file_path):
 st.title("Dynamic Page Input Example")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 if main_option == 'Open-Source':
-    user_input = st.text_input("Enter your text:")
-    st.write(f"Current URL: https://mcaddon-manager.streamlit.app/?url={user_input}")
+    query_params = st.query_params
+    user_input = query_params.get("url", [""])[0]
+    user_input = st.text_input("Enter your text:", value=user_input)
 
-    st.write(f"Current URL: https://mcaddon-manager.streamlit.app/?url={user_input}")
+    st.query_params = {"url": user_input}
+
+    st.write(
 
 if main_option == '-Changelogs-':
     
