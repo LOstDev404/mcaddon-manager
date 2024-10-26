@@ -99,9 +99,10 @@ if main_option == 'Open-Source':
         if github_url and 'github.com' in github_url:
             downloadgithub(github_url)
             st.session_state.downloadedgithub = True
-
+    if 'downloadedgithub' in st.session_state:
+        st.success("Github Directory Downloaded")
 
 if main_option == '-Changelogs-':
     st.markdown("## **`Addon Manager | 0.01`:**")
-    st.markdown("- Date: *10/25/2024*")
+    st.markdown("- Added ability for the app to download folders from Github Repositories.\n - Date: *10/25/2024*")
     st.write("---")
