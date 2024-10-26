@@ -69,10 +69,10 @@ st.title("Dynamic Page Input Example")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 
 if main_option == 'Open-Source':
-query_params = st.experimental_get_query_params()
-default_text = query_params.get("input", [""])[0]
-user_input = st.text_input("Enter your text:", value=default_text)
-st.write(f"You entered: {user_input}")
+    query_params = st.experimental_get_query_params()
+    default_text = query_params.get("input", [""])[0]
+    user_input = st.text_input("Enter your text:", value=default_text)
+    st.write(f"You entered: {user_input}")
 
 
 if main_option == '-Changelogs-':
