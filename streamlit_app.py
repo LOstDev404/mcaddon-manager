@@ -69,7 +69,7 @@ st.title("Dynamic Page Input Example")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 
 if main_option == 'Open-Source':
-    query_params = st.experimental_get_query_params()
+    query_params = query_params.get()
     default_text = query_params.get("git", [""])[0]
     url = st.text_input("Enter your text:", value=default_text)
     st.write(f"You entered: {url}")
