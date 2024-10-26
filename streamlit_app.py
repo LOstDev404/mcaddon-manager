@@ -1,7 +1,19 @@
 import streamlit as st
+import os
+import zipfile
+import requests
+import uuid
+import json
 from urllib.parse import urlparse, parse_qs
-main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
+st.set_page_config(
+    page_title="MCAddon Manager",
+    page_icon="mcaddon-logo.ico"
+    
+)
+
+#
 st.title("Dynamic Page Input Example")
+main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 if main_option == 'Open-Source':
   query_params = st.experimental_get_query_params()
   default_text = query_params.get("input", [""])[0]
