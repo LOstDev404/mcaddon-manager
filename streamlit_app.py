@@ -11,6 +11,25 @@ st.set_page_config(
     
 )
 #Functions:
+#Github Download
+def download_github_folder(repo_owner, repo_name, branch, folder_path, output_dir):
+    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{folder_path}?ref={branch}"
+    headers = {"Accept": "application/vnd.github.v3+json"}
+
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        contents = response.json()
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        
+        for item in contents:
+            item_path = os.path.join(output_dir, item['name'])
+            if item['type'] == 'file':
+                download_file(item['download_url'], item_path)
+            elif item['type'] == 'dir':
+                download_github_folder(repo_owner, repo_name, branch, f"{folder_path}/{item['name']}", item_path)
+    else:
+        st.error("Error fetching the GitHub folder contents.")
 #UUID Gen
 def generate_uuids():
     return str(uuid.uuid4()), str(uuid.uuid4())
@@ -61,11 +80,11 @@ def upload_to_fileio(file_path):
 st.title("Dynamic Page Input Example")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 if main_option == 'Open-Source':
-  query_params = st.experimental_get_query_params()
-  default_text = query_params.get("url", [""])[0]
-  user_input = st.text_input("Enter your text:", value=default_text)
-  st.experimental_set_query_params(url=user_input)
-  st.write(f"Current URL: https://mcaddon-manager.streamlit.app/?url={user_input}'")
+    query_params = st.experimental_get_query_params()
+    user_input = query_params.get("url", [""])[0]
+    user_input = st.text_input("Enter your text:", value=user_input)
+    st.experimental_set_query_params(url=user_input)
+    st.write(f"Current URL: https://mcaddon-manager.streamlit.app/?url={user_input}")
 
 if main_option == '-Changelogs-':
     
