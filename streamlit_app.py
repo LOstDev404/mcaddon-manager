@@ -65,7 +65,7 @@ def upload_to_fileio(file_path):
     return response_data.get('link')
 
 # ---------------------------------------- UI Starts Here ----------------------------------------
-st.title("Open Source 'MCADDON Manager `Version: 0.01`")
+st.title("Open Source MCADDON Manager `Version: 0.01`")
 main_option = st.selectbox('Choose an option:', ['Open-Source', '-Changelogs-'])
 
 if main_option == 'Open-Source':
