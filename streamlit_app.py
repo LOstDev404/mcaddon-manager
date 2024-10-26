@@ -18,7 +18,7 @@ st.set_page_config(
 st.title('MCADDON Custom Value Manager (Open Source `Version: 0.01`')
 st.write('Contact `LOstDev404` on Discord for any bugs, questions, or suggestions.')
 
-main_option = st.selectbox('Choose a pack / option:', ['Unfinished', '-Changelogs-'])
+main_option = st.selectbox('Choose a pack / option:', ['Open-Source', '-Changelogs-'])
 
 if main_option == 'Open-Source':
     query_params = st.experimental_get_query_params()
